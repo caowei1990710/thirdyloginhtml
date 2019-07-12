@@ -1,0 +1,97 @@
+<div class="tab-content">
+  <form class="form-inline am-form-query" name="queryForm">
+    <button type="submit" class="departmentbutton btn btn-primary toselet" style="margin-right: 10px"
+            ng-click="forthuserlist.getList();">
+      查询
+    </button>
+  </form>
+  <div class="tabbleout">
+    <table class="table tableoutwidth">
+      <thead>
+      <tr ng-model="forthuserlist.DepositList"
+          data="[{id:'userName'},{id:'realName'},{id:'bankCard'},{id:'bankName'},{id:'secondrealName'},{id:'secondbankCard'},{
+          id:'secondbankName'},{id:'thirdrealName'},{id:'thirdbankCard'},{id:'thirdbankName'}]"
+          index="forthuserlist.bankindex" ng-click="forthuserlist.editBank($index)" from-stryle>
+        <th>会员账号</th>
+        <th>名字</th>
+        <th>卡号</th>
+        <th>银行类型</th>
+        <th>名字</th>
+        <th>卡号</th>
+        <th>银行类型</th>
+        <th>名字</th>
+        <th>卡号</th>
+        <th>银行类型</th>
+        <!--<th>执行时间</th>-->
+        <!--<th>过期时间</th>-->
+        <!--<th>所属平台</th>-->
+        <!--<th>创建人</th>-->
+        <!--<th>游戏方备注</th>-->
+        <!--<th>状态</th>-->
+      </tr>
+      </thead>
+      <tbody data="forthuserlist.bankindex" ng-model="forthuserlist.bankList" index="forthuserlist.bankindex">
+      <tr ng-repeat="item in forthuserlist.DepositList track by $index"
+          ng-class="{acolor:forthuserlist.bankindex == $index}"
+          ng-click="forthuserlist.editBank($index)" class="repeat-animation">
+        <td ng-class="{colorwhite:forthuserlist.bankindex == $index}">
+          {{item.userName}}
+        </td>
+        <td ng-class="{colorwhite:forthuserlist.bankindex == $index}">
+          {{item.realName}}
+        </td>
+        <!--<td ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.userName}}</td>-->
+        <td ng-class="{colorwhite:forthuserlist.bankindex == $index}">
+          <!--<span ng-if="item.userName">{{item.userName}}</span>-->
+          <!--<button ng-if="!item.userName" ng-click="forthuserlist.rebuild($index)">修改</button>-->
+          <span>{{item.bankCard}}</span>
+        </td>
+        <td ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.bankName}}
+        </td>
+        <td ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.secondrealName}}</td>
+        <td ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.secondbankCard}}</td>
+        <td ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.secondbankName}}</td>
+        <td ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.thirdrealName}}</td>
+        <td ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.thirdbankCard}}</td>
+        <td ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.thirdbankName}}</td>
+        <!--<td ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.excuteTime}}</td>-->
+        <!--<td ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.platfrom}}</td>-->
+        <!--<td ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.platfrom|-->
+        <!--nameTovalue:'id':'name':$root.platfromlist}}-->
+        <!--</td>-->
+        <!--<td ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.createUser}}</td>-->
+        <!--<td ng-if="item.state!='EXECUTED'&&!item.edit"-->
+        <!--ng-class="{colorwhite:forthuserlist.bankindex == $index}"><input style="width: 100px" type="text"-->
+        <!--ng-model="item.userRemark">-->
+        <!--</td>-->
+        <!--<td ng-if="item.state=='EXECUTED'||item.edit"-->
+        <!--ng-class="{colorwhite:forthuserlist.bankindex == $index}">{{item.userRemark}}-->
+        <!--</td>-->
+        <!--<td>-->
+        <!--&lt;!&ndash;<input type="text">&ndash;&gt;-->
+        <!--<select-list ng-if="item.state!='EXECUTED'&&item.edit" style="width: 100px" ng-model="forthuserlist.platfrom"-->
+        <!--name="platfromlist" type="0"></select-list>-->
+        <!--&lt;!&ndash;<type-style value="item.state" list="depositstate"></type-style>&ndash;&gt;-->
+        <!--&lt;!&ndash;<button ng-if="item.state!='EXECUTED'&&!item.edit" ng-click="forthuserlist.updateBefore($index)">补单</button>&ndash;&gt;-->
+        <!--&lt;!&ndash;<button ng-if="item.state!='EXECUTED'&&item.edit"&ndash;&gt;-->
+        <!--&lt;!&ndash;ng-click="forthuserlist.editBefore($index)">修改&ndash;&gt;-->
+        <!--&lt;!&ndash;</button>&ndash;&gt;-->
+        <!--&lt;!&ndash;<label>{{item.state}}</label>&ndash;&gt;-->
+        <!--<type-style value="item.state" list="depositstate"></type-style>-->
+        <!--&lt;!&ndash;<button ng-if="item.state!='EXECUTED'" ng-click="forthuserlist.rebuild($index)">补单</button>&ndash;&gt;-->
+
+        <!--</td>-->
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!--<div style="text-align: center">总计{{forthuserlist.totalSum}}小计{{forthuserlist.nowSum}}</div>-->
+  <!--<pagination page="forthuserlist.page" total="forthuserlist.total" size="forthuserlist.sizePerPage"-->
+  <!--trigger="forthuserlist.get(page)"></pagination>-->
+  <!--<div class="pull-right buttonpost">-->
+  <!--<click-button click="forthuserlist.doubleDelete" value="删除"></click-button>-->
+  <!--<click-button click="forthuserlist.doubleMatch" value="匹配"></click-button>-->
+  <!--<click-button click="forthuserlist.doubleUpdate" value="修正"></click-button>-->
+  <!--</div>-->
+</div>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<!-- saved from url=(0066)http://pay.hc555.net/payment/bank/add_card_tow.php?username=cs8520 -->
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport"
+        content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+  <title>添加银行卡</title>
+  <!-- 引入 FrozenUI -->
+  <link rel="stylesheet" href="addbank/frozenui.css">
+  <link rel="stylesheet" href="addbank/style.css">
+  <script src="addbank/jquery-1.7.2.min.js"></script>
+  <script src="addbank/clipboard.js"></script>
+  <script src="addbank/bank.js"></script>
+  <script src="addbank/layer.js"></script>
+  <link rel="stylesheet" href="addbank/layer.css" id="layuicss-layer">
+</head>
+<body style="width: 750px;">
+<div class="header" style="width: 750px;">
+  <div class="back" onclick="javascript:history.back(-1);">
+    <img src="addbank/back.png">
+  </div>
+  <div class="title">
+    <span>添加银行卡</span>
+  </div>
+</div>
+<div class="content">
+  <form action="http://pay.hc555.net/payment/bank/add_card_tow.php" method="post" id="test_form">
+
+    <input id="act" name="act" type="hidden" value="zhaohui">
+    <input id="" name="username" type="hidden" value="cs8520">
+
+    <div class="mul-input">
+      <label>账户名</label>
+      <input type="text" id="redl_name" name="redl_name" placeholder="请输入账户名">
+    </div>
+
+
+    <div class="mul-input">
+      <label>银行卡号</label>
+      <input type="text" name="bank_card" id="bank_card" placeholder="请输入银行卡号" onblur="set_bank()"
+             onkeyup="value=value.replace(/[^\d]/g,&#39;&#39;)">
+    </div>
+
+
+    <div class="mul-input">
+      <label>银行名称</label>
+      <input type="text" name="bank_name" id="bank_name" placeholder="银行名称（如无法识别，请手动输入）">
+    </div>
+
+
+  </form>
+
+  <div class="mul-submit">
+    <button class="ui-btn-lg ui-btn-primary tijiao">提交</button>
+    <button class="ui-btn-lg ui-btn-danger xiugai" style="display:none">修改</button>
+  </div>
+
+</div>
+
+
+<script>
+  var href = "http://d1186.com";
+//  var href = "http://172.16.19.26";
+  //  var href = "http://www.hp168168.com";
+  function set_bank() {
+    var info = bankCardAttribution($("#bank_card").val());
+    //alert(JSON.stringify(info));
+    $("#bank_name").val(info.bankName);
+  }
+  var thisURL = document.URL;
+  var getval = thisURL.split('id=')[1];
+  var str = getval;
+  var resultitem;
+  //  if (!str) {
+  //    alert("请先登录")
+  ////    window.location.href = 'http://d1186.com/bankDeposit.html';
+  //    window.close();
+  //  }
+  var strs = new Array();
+  strs = str.split(","); //字符分割
+  var addindex = strs[4], destindex = -1;
+  $.ajax({
+    type: "POST",
+    dataType: "json",
+    // url: "http://localhost:8081/getbank?userName=" + strs[0],
+    url: href + ":8081/getbank",
+    data: {
+      "userName": strs[0]
+    },
+    success: function (result) {
+      console.log("result:" + result);
+      if (!result.data)
+        result.data = {};
+      resultitem = result.data;
+//                alert(result.msg);
+      if (result.data.realName == null)
+        destindex = 0;
+      else if (result.data.secondrealName == null)
+        destindex = 1;
+      else if (result.data.thirdrealName == null)
+        destindex = 2;
+      else
+        destindex = -1;
+      if (addindex)
+        destindex = addindex;
+      if (destindex == -1) {
+        alert("请求不合法");
+//        return
+      }
+      if (result.data && addindex) {
+//        $(".tijiao").css("display", "none");
+//        $(".xiugai").css("display", "block");
+        if (addindex == 0) {
+          $("#redl_name").val(result.data.realName);
+          $("#bank_card").val(result.data.bankCard);
+          $("#bank_name").val(result.data.bankName);
+        } else if (addindex == 1) {
+          $("#redl_name").val(result.data.secondrealName);
+          $("#bank_card").val(result.data.secondbankCard);
+          $("#bank_name").val(result.data.secondbankName);
+        } else if (addindex == 2) {
+          $("#redl_name").val(result.data.thirdrealName);
+          $("#bank_card").val(result.data.thirdbankCard);
+          $("#bank_name").val(result.data.thirdbankName);
+        }
+
+
+//        alert("未绑定银行卡,去添加银行卡");
+//        window.location.href = "http://d1186.com/addbank.html?id=" + strs[0] + "," + strs[1];
+      }
+//      $('#realName').html(result.data[0].realName);
+//      $('#bankCard').html(result.data[0].bankName + "(" + result.data[0].bankCard + ")");
+//      if (strs.length > 1) {
+//        $('#userAccount').html(strs[0]);
+//        $('#userMoney').html(strs[1]);
+//      }
+    }
+  })
+  window.onload = function (x) {
+    if (addindex) {
+      $('.tijiao').html("修改")
+    }
+    document.querySelector(".tijiao").addEventListener("click", function () {
+      if ($("#redl_name").val().length == 0) {
+        layer.msg('账户名不能为空');
+        return false;
+      }
+      if ($("#bank_card").val().length == 0) {
+        layer.msg('银行卡号不能为空');
+        return false;
+      }
+      if ($("#bank_name").val().length == 0) {
+        layer.msg('银行名称不能为空');
+        return false;
+      }
+      var result;
+      if (addindex) {
+        result = confirm("确定修改成" + $("#redl_name").val() + "的" + $("#bank_name").val() + "的" + $("#bank_card").val() + "的卡号")
+      } else
+        result = confirm("确定加上" + $("#redl_name").val() + "的" + $("#bank_name").val() + "的" + $("#bank_card").val() + "的卡号")
+      if (!result)
+        return
+      if (destindex == 0) {
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: href + ":8081/addmorebank",
+          data: {
+            "userName": strs[0],
+            "realName": ($("#redl_name").val()).replace(" ",""),
+            "bankCard": ($("#bank_card").val()).replace(" ",""),
+            "bankName": ($("#bank_name").val()).replace(" ",""),
+            "orderno": strs[2],
+            "callbackurl": strs[3]
+          },
+          success: function (result) {
+            alert(result.msg);
+            if (result.code == 200) {
+              if (addindex)
+                getval = getval.substring(0, getval.lastIndexOf(","));
+//            window.location.href = "http://d1186.com/bankdeposith5.html?id=" + strs[0] + "," + strs[1];
+              window.location.href = href + "/bankdeposith5.html?id=" + getval;
+            }
+          }
+        })
+      } else if (destindex == 1) {
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: href + ":8081/addmorebank",
+          data: {
+            "userName": strs[0],
+            "secondrealName": ($("#redl_name").val()).replace(" ",""),
+            "secondbankCard": ($("#bank_card").val()).replace(" ",""),
+            "secondbankName": ($("#bank_name").val()).replace(" ",""),
+            "orderno": strs[2],
+            "callbackurl": strs[3]
+          },
+          success: function (result) {
+            alert(result.msg);
+            if (result.code == 200) {
+              if (addindex)
+                getval = getval.substring(0, getval.lastIndexOf(","));
+//            window.location.href = "http://d1186.com/bankdeposith5.html?id=" + strs[0] + "," + strs[1];
+              window.location.href = href + "/bankdeposith5.html?id=" + getval;
+            }
+          }
+        })
+      } else if (destindex == 2) {
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: href + ":8081/addmorebank",
+          data: {
+            "userName": strs[0],
+            "thirdrealName": ($("#redl_name").val()).replace(" ",""),
+            "thirdbankCard": ($("#bank_card").val()).replace(" ",""),
+            "thirdbankName": ($("#bank_name").val()).replace(" ",""),
+            "orderno": strs[2],
+            "callbackurl": strs[3]
+          },
+          success: function (result) {
+            alert(result.msg);
+            if (result.code == 200) {
+              if (addindex)
+                getval = getval.substring(0, getval.lastIndexOf(","));
+//            window.location.href = "http://d1186.com/bankdeposith5.html?id=" + strs[0] + "," + strs[1];
+              window.location.href = href + "/bankdeposith5.html?id=" + getval;
+            }
+          }
+        })
+      }
+
+//      $.ajax({
+//        //几个参数需要注意一下
+//        type: "POST",//方法类型
+//        dataType: "json",//预期服务器返回的数据类型
+//        url: "ajax.php",//url
+//        data: $('#test_form').serialize(),
+//        success: function (result) {
+//          if (result.ret == "1") {
+//            //layer.msg('保存成功！');
+//            layer.msg('保存成功！', {
+//              icon: 1,
+//              time: 2000,
+//              end: function () {
+//                location.href = 'banklist.php?username=cs8520';
+//              }
+//            });
+//          }
+//          else if (result.ret == "2") {
+//            layer.msg('卡号已被绑定！');
+//          }
+//          else {
+//            layer.msg('保存失败！');
+//          }
+//        },
+//        error: function () {
+//          alert("异常！");
+//        }
+//      });
+    });
+
+    document.querySelector(".xiugai").addEventListener("click", function () {
+        if ($("#redl_name").val().length == 0) {
+          layer.msg('账户名不能为空');
+          return false;
+        }
+        if ($("#bank_card").val().length == 0) {
+          layer.msg('银行卡号不能为空');
+          return false;
+        }
+        if ($("#bank_name").val().length == 0) {
+          layer.msg('银行名称不能为空');
+          return false;
+        }
+        var result = confirm("确定修改" + $("#redl_name").val() + "的" + $("#bank_name").val() + "的" + $("#bank_card").val() + "的卡号");
+        if (!result)
+          return
+        $.ajax({
+          type: "PUT",
+          dataType: "json",
+          url: "http://47.91.212.208:8081/updateuser",
+          data: {
+            "userName": strs[0],
+            "realName": ($("#redl_name").val()).replace(" ",""),
+            "bankCard": ($("#bank_card").val()).replace(" ",""),
+            "bankName": ($("#bank_name").val()).replace(" ",""),
+            "orderno": strs[2],
+            "callbackurl": strs[3]
+          },
+          success: function (result) {
+            alert(result.msg);
+            if (result.code == 200) {
+//                alert("http://d1186.com/bankdeposith5.html?id=" + getval)
+              window.location.href = href + "/bankdeposith5.html?id=" + getval;
+            }
+          }
+        })
+//      $.ajax({
+//        //几个参数需要注意一下
+//        type: "POST",//方法类型
+//        dataType: "json",//预期服务器返回的数据类型
+//        url: "ajax.php",//url
+//        data: $('#test_form').serialize(),
+//        success: function (result) {
+//          if (result.ret == "1") {
+//            //layer.msg('保存成功！');
+//            layer.msg('保存成功！', {
+//              icon: 1,
+//              time: 2000,
+//              end: function () {
+//                location.href = 'banklist.php?username=cs8520';
+//              }
+//            });
+//          }
+//          else if (result.ret == "2") {
+//            layer.msg('卡号已被绑定！');
+//          }
+//          else {
+//            layer.msg('保存失败！');
+//          }
+//        },
+//        error: function () {
+//          alert("异常！");
+//        }
+//      });
+      }
+    )
+    ;
+    //    document.querySelector(".zhaohui").addEventListener("click", function () {
+    //      $("#act").val("zhaohui");
+    //      $.ajax({
+    //        //几个参数需要注意一下
+    //        type: "POST",//方法类型
+    //        dataType: "json",//预期服务器返回的数据类型
+    //        url: "ajax.php",//url
+    //        data: $('#test_form').serialize(),
+    //        success: function (result) {
+    //          if (result.ret == "1") {
+    //            layer.msg('找回成功！', {
+    //              icon: 1,
+    //              time: 2000,
+    //              end: function () {
+    //                location.href = 'banklist.php?username=cs8520';
+    //              }
+    //            });
+    //          }
+    //          else if (result.ret == "2") {
+    //            layer.msg('该卡已验证，找回失败');
+    //          }
+    //          else {
+    //            layer.msg('查找不到该卡');
+    //          }
+    //        },
+    //        error: function () {
+    //          alert("异常！");
+    //        }
+    //      });
+    //    });
+  }
+</script>
+<script>
+  var browser = {
+    versions: function () {
+      var u = navigator.userAgent, app = navigator.appVersion;
+      return {     //移动终端浏览器版本信息
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+        iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+        iPad: u.indexOf('iPad') > -1, //是否iPad
+        webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+      };
+    }(),
+    language: (navigator.browserLanguage || navigator.language).toLowerCase()
+  }
+  if (browser.versions.mobile) {//判断是否是移动设备打开。browser代码在下面
+    document.querySelector("body").style.width = '100%';
+    document.querySelector(".header").style.width = '100%';
+  }
+  else {
+    document.querySelector("body").style.width = '750px';
+    document.querySelector(".header").style.width = '750px';
+  }
+</script>
+<div class="layui-layer-move"></div>
+</body>
+</html>

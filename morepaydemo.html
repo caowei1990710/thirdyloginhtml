@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<script type=text/javascript src=jquery.min.js></script>
+<script type=text/javascript src=md5.js></script>
+<script type="text/javascript" src="qrcode.min.js"></script>
+<script>
+
+
+  function toPay() {
+    var sUserAgent = navigator.userAgent.toLowerCase();
+    var bIsIpad = sUserAgent.match(/ipad/i) == 'ipad';
+    var bIsIpad = sUserAgent.match(/ipad/i) == 'ipad';
+    var bIsIphoneOs = sUserAgent.match(/iphone os/i) == 'iphone os';
+    var bIsMidp = sUserAgent.match(/midp/i) == 'midp';
+    var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == 'rv:1.2.3.4';
+    var bIsUc = sUserAgent.match(/ucweb/i) == 'web';
+    var bIsCE = sUserAgent.match(/windows ce/i) == 'windows ce';
+    var bIsWM = sUserAgent.match(/windows mobile/i) == 'windows mobile';
+    var bIsAndroid = sUserAgent.match(/android/i) == 'android';
+    var ismobel = false;
+    if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+//    alert("您是手机登录");
+      ismobel = true
+    }
+    var sign = "9d40e1329780d62e"//商户签名
+    var merchat = {
+      "version": "1.0",
+      "MerchaantNo": "test1",
+      "type": "alapi"
+    }
+    merchat.amount = $("#amount").val();
+//    merchat.userRemark = amount = $("#username").val();
+    merchat.payer = "username";
+    //    merchat.RealName ="张三";
+    //    console.log(merchat.version + merchat.MerchaantNo + merchat.type + merchat.payer + sign);
+    var content = merchat.version + merchat.MerchaantNo + merchat.type + merchat.payer + sign;
+    merchat.sign = hex_md5(content);
+    console.log("content: " + content + " sign:" + merchat.sign);
+    $.ajax({
+      type: 'post',
+//         url: 'http://midpaydemo.com:8080/midpay',
+      //url: 'http://103.205.121.9:8081/midpay',
+//        url: 'http://zhifukaui111.info:8081/midpay',
+//      url: 'http://api.hp168168.com/midpay',
+      url: 'http://localhost:8081/allmidpay',
+//        url: 'http://api.zhifukaui111.info/midpay',
+      //url: 'http://47.75.144.122:8089/midpay',
+
+//        url: 'http://localhost:8081/midpay',
+      data: merchat,
+      success: function (data) {
+        console.log(data);
+        if (data.code != 200) {
+          playMusic();
+          alert(data.msg)
+          return
+        }
+        amount = data.data.amount;
+        account = data.data.account;
+        nickname = data.data.nickname;
+        realname = data.data.realname;
+        username = data.data.username;
+        imgurlsrc = data.data.url;
+        var qrcode = new QRCode(document.getElementById("qr"), {
+          width: 500,
+          height: 500
+        });
+        if (ismobel)
+          window.location.href = data.data.payUrl;
+        qrcode.makeCode(data.data.payUrl);
+      },
+      error: function (data) {
+
+      }
+    })
+  }
+
+  function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split("=");
+      if (pair[0] == variable) {
+        return pair[1];
+      }
+    }
+    return (false);
+  }
+</script>
+<body>
+<div style="text-align: center">
+  <div align="center" id="qr" class="margin-top" style="text-align: center;display: inline-block"></div>
+</div>
+<form method="get" style="margin-top: 150px;margin-left: 250px;">
+  <p>提案号: <input id="username" type="text" name="fname"/></p>
+  <p>付金额: <input id="amount" type="number" name="lname"/></p>
+  <input onclick="toPay()" type="button" value="Submit" style="margin-left: 100px"/>
+</form>
+
+</body>
+</html>

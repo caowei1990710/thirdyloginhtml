@@ -1,0 +1,27 @@
+<!-- saved from url=(0062)http://pay.hc555.net/payment/bank/banklist.php?username=cs8520 --><html lang=en><head><meta http-equiv=Content-Type content="text/html; charset=UTF-8"></head><body style="width: 750px"><meta name=viewport content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no"><title>银行卡</title><!-- 引入 FrozenUI --><link rel=stylesheet href=bank/frozenui.css><link rel=stylesheet href=bank/style.css><script>var a=document.body.innerHTML;
+document.body.innerHTML=a.replace(/\ufeff/g,'');</script><div class=header style="width: 750px"><div class=back><a href=http://pay.hc555.net/payment/bank/mains.php><img src=bank/back.png></a></div><div class=title><span>银行卡</span></div><div class=tool><span onclick="location.href=&#39;add_card_tow.php?username=cs8520&#39;">添加</span></div></div><div class=content><div class=ui-tooltips><div class="ui-tooltips-cnt ui-tooltips-cnt-link ui-border-b">请使用以下绑定银行卡进行转账</div></div><ul class="ui-list ui-list-single ui-list-link ui-border-tb"><li class=ui-border-t onclick="location.href=&#39;bank_detail.php?bank_id=4631&#39;"><div class=ui-list-info><h4 class=ui-nowrap>中国工商银行(尾号 2722 )<p class=wyz>未验证</p></h4><div class=ui-txt-info>李昊奇 <span style=color:#B1B1B1;font-size:13px>（已绑定）</span></div></div></li><li class=ui-border-t onclick="location.href=&#39;bank_detail.php?bank_id=4632&#39;"><div class=ui-list-info><h4 class=ui-nowrap>中国农业银行(尾号 6971 )<p class=yyz>已验证</p></h4><div class=ui-txt-info>王焕明 <span style=color:#B1B1B1;font-size:13px>（已绑定）</span></div></div></li></ul><button class="ui-btn-lg more" onclick="location.href=&#39;add_card_tow.php?username=cs8520&#39;">添加</button><div class=tooltip><p><i class=info_1></i>未验证银行卡不影响正常使用，成功转账一次会自动验证，建议不用的银行卡及时删除。为了您的资金安全 ，已验证的银行卡会自动锁定 ，无法删除和修改 ，如需要删除或修改请联系在线客服。</p></div></div><script>var browser = {
+            versions: function() {
+                var u = navigator.userAgent, app = navigator.appVersion;
+                return {     //移动终端浏览器版本信息
+                    trident: u.indexOf('Trident') > -1, //IE内核
+                    presto: u.indexOf('Presto') > -1, //opera内核
+                    webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                    gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                    mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+                    ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                    android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+                    iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+                    iPad: u.indexOf('iPad') > -1, //是否iPad
+                    webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+                };
+            } (),
+            language: (navigator.browserLanguage || navigator.language).toLowerCase()
+        }
+        if (browser.versions.mobile) {//判断是否是移动设备打开。browser代码在下面
+            document.querySelector("body").style.width = '100%';
+            document.querySelector(".header").style.width = '100%';
+        }
+        else {
+            document.querySelector("body").style.width = '750px';
+            document.querySelector(".header").style.width = '750px';
+        }</script></body></html>

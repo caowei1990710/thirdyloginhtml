@@ -1,0 +1,253 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>转账提交页面</title>
+  <meta name="keywords" content="">
+  <meta name="description">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=yes">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/project.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/animate.min.css">
+
+  <link rel="stylesheet" href="css/css3.css">
+  <script type="text/javascript" src="http://static.runoob.com/assets/qrcode/qrcode.min.js"></script>
+  <script type="text/javascript" src="js/jQuery.js"></script>
+  <script type="text/javascript" src="js/index.js"></script>
+  <script type="text/javascript" src="js/Calendar.js"></script>
+
+  <script>
+    var sUserAgent = navigator.userAgent.toLowerCase();
+    var bIsIpad = sUserAgent.match(/ipad/i) == 'ipad';
+    var bIsIphoneOs = sUserAgent.match(/iphone os/i) == 'iphone os';
+    var bIsMidp = sUserAgent.match(/midp/i) == 'midp';
+    var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == 'rv:1.2.3.4';
+    var bIsUc = sUserAgent.match(/ucweb/i) == 'web';
+    var bIsCE = sUserAgent.match(/windows ce/i) == 'windows ce';
+    var bIsWM = sUserAgent.match(/windows mobile/i) == 'windows mobile';
+    var bIsAndroid = sUserAgent.match(/android/i) == 'android';
+    var ismobel = false;
+    alert(window.location.href);
+    window.location.href = "http://d1186.com/bankdeposith5.html?id=" + getQueryString("account") + "," + getQueryString("amount") + "," + getQueryString("orderno") + "," + getQueryString("callbackurl");
+    var a = document.body.innerHTML;
+    //    document.body.innerHTML = a.replace(/\ufeff/g, '');
+    //    var thisURL = document.URL;
+    //    var getval = thisURL.split('id=')[1];
+    //    var str = getval, bankcard, bankname, bankaddress, bankType;
+    //    if (str) {
+    //        var strs = new Array();
+    //        strs = str.split(","); //字符分割
+    //    }
+
+    if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+//    alert("您是手机登录");
+      ismobel = true
+    }
+    if (getQueryString("account") && getQueryString("orderno") && getQueryString("callbackurl")) {
+      console.log("account:" + getQueryString("account") + " orderno:" + getQueryString("orderno") + " callbackurl" + getQueryString("callbackurl"));
+      window.location.href = "http://d1186.com/bankdeposith5.html?id=" + getQueryString("account") + "," + getQueryString("amount") + "," + getQueryString("orderno") + "," + getQueryString("callbackurl");
+//      $.ajax({
+//        type: "GET",
+//        url: "http://47.91.212.208:8081/checkaccount?userName=" + getQueryString("account"),
+//        success: function (data) {
+//          if (data.code == 200)
+//            window.location.href = "http://d1186.com/bankdeposith5.html?id=" + getQueryString("account") + "," + getQueryString("amount") + "," + getQueryString("orderno") + "," + getQueryString("callbackurl");
+//          else
+//            alert(data.msg);
+//        }
+//      })
+    }
+    //    var sign = "a7925f7886bd2451"//商户签名
+    //    var merchat = {
+    //      "version": "1.0",
+    //      "MerchaantNo": "shunfu001",
+    //      "type": "alapi"
+    //    }
+    //    $.ajax({
+    //      type: "GET",
+    //      url: "http://api.hp168168.com/agent?name=&type&create=&agentName=&state=&page=1&size=500",
+    //      success: function (data) {
+    //        console.log(data);
+    //        if (data.code != 200) {
+    //          alert(data.msg);
+    //          return
+    //        }
+    //        for (var i = 0; i < data.data.length; i++)
+    //          $('#platfrom').append(new Option(data.data[i].name, data.data[i].sign))
+    //      },
+    //      error: function (data) {
+    //      }
+    //    })
+    /**
+     * 根据变量名获取匹配值
+     */
+    function getQueryString(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]);
+      return null;
+    }
+    function gotopay() {
+      $.ajax({
+        type: "GET",
+        url: "http://47.91.212.208:8081/checkaccount?userName=" + $("#depositnumber").val(),
+        success: function (data) {
+          if (data.code == 200)
+            window.location.href = "http://d1186.com/bankdeposith5.html?id=" + $("#depositnumber").val() + "," + $("#amount").val();
+          else
+            alert(data.msg);
+        }
+      })
+    }
+    function toPay() {
+      alert("topay");
+//      merchat.amount = $('#amount').val();
+//      merchat.payer = "username";
+//      merchat.userRemark = $('#depositnumber').val();
+//      //    merchat.RealName ="张三";
+////    console.log(merchat.version + merchat.MerchaantNo + merchat.type + merchat.payer + sign);
+//      merchat.sign = hex_md5(merchat.version + merchat.MerchaantNo + merchat.type + merchat.payer + sign);
+//      console.log(merchat.sign);
+//      setTimeout(function () {
+//        $.ajax({
+//          type: 'post',
+//          url: 'http://www.shunfu.me:8081/setDefaultPosal',
+//          data: merchat,
+//          success: function (data) {
+//            console.log(data);
+//            if (data.code != 200) {
+//              alert(data.msg);
+//              return
+//            }
+//            window.location.href = data.data.qrurl;
+//          },
+//          error: function (data) {
+//          }
+//        })
+//      }, 2000);
+    }
+    //    function checkpay(userRemark) {
+    //      var norurl = "http://api.hp168168.com/";
+    //      $.ajax({
+    //        type: "GET",
+    //        url: norurl + "getPosal?userRemark=" + userRemark,
+    //        success: function (data) {
+    //          console.log(data);
+    //          if (data.msg.split("&")[data.msg.split("&").length - 1] == "EXECUTED") {
+    //            alert("付款已完成")
+    //            window.close();
+    //            return
+    //          } else if (data.msg.split("&")[data.msg.split("&").length - 1] == "OVERTIME") {
+    //            alert("提案已超时")
+    //            window.close();
+    //            return
+    //          }
+    //          setTimeout(function () {
+    //            checkpay(userRemark);
+    //          }, 2000)
+    //        }
+    //      })
+    //
+    //    }
+    //
+    //    function goLogin() {
+    //      if ($('#username').val() != "" && $('#amount').val() != "") {
+    //        var norurl = "http://api.hp168168.com/";
+    //        var apiDeposit = {
+    //          "BankCode": "ALIPAY",
+    //          "CallBackUrl": "http://www.google.com",
+    //          "CustomerId": $('#depositnumber').val(),
+    //          "Message": "PAY",
+    //          "Mode": "8",
+    //          "Mobiletype": "0",
+    //          "Money": $('#amount').val(),
+    //          "ReturnUrl": "http://pay.iweeklyauto.com/pay/jsp/gopay/true.jsp",
+    //          "UserId": $("#platfrom").find("option:selected").text()
+    //        }
+    //        var result = "BankCode=" + apiDeposit.BankCode + "&CallBackUrl=" + apiDeposit.CallBackUrl + "&CustomerId=" + apiDeposit.CustomerId
+    //          + "&Message=" + apiDeposit.Message + "&Mode=" + apiDeposit.Mode + "&Money=" + apiDeposit.Money + "&ReturnUrl=" + apiDeposit.ReturnUrl + "&UserId=" + apiDeposit.UserId + "&Key="
+    //          + $('#platfrom').val();
+    //        console.log("result:" + result + " sign:" + hex_md5(result));
+    //        apiDeposit.sign = hex_md5(result);
+    //        $.ajax({
+    //          type: 'post',
+    //          url: norurl + 'setProposal',
+    //          data: apiDeposit,
+    //          success: function (data) {
+    //            console.log(data);
+    //            var userRemark;
+    //            if (data.code != 200) {
+    //              alert(data.msg);
+    //              return
+    //            }
+    //            window.location.href = data.data.payUrl;
+    //            $("#payUrl").attr("src", "http://qr.liantu.com/api.php?text=" + data.data.qrUrl.replace(/&/g, "%26"));
+    //            setTimeout(function () {
+    //              checkpay(userRemark);
+    //            }, 5000);
+    //          },
+    //          error: function (data) {
+    //          }
+    //        })
+    //      }
+    //    }
+  </script>
+  <script type="text/javascript" src="jquery.min.js"></script>
+  <script type="text/javascript" src="md5.js"></script>
+</head>
+
+
+<body>
+<style>
+  html,
+  body {
+    background: #fff;
+  }
+</style>
+<!--<div class="log_head cle">-->
+<!--<img src="img/img5.jpg" class="fl">-->
+<!--</div>-->
+<div style="
+    text-align: right;
+    margin-right: 250px;
+">
+  <img id="payUrl"
+       style=""
+       src=""/>
+</div>
+<div class="log_warp">
+  <div class="w_1200 cle">
+    <div class="form fr">
+      <div align="center" id="qr" class="margin-top" style="display:none;text-align: center"></div>
+      <div class="title">
+        付款转账
+      </div>
+      <!--<div class="list">-->
+      <!--<select id="platfrom"></select>-->
+      <!--</div>-->
+      <div class="list">
+        <input type="text" id="depositnumber" placeholder="会员账号...">
+      </div>
+
+      <div class="list">
+        <input type="text" id="amount" placeholder="输入金额...">
+      </div>
+
+
+      <div class="but">
+        <input type="button" onclick="gotopay()" value="付 款">
+      </div>
+      <!--<div style="text-align: center"><img id="payUrl" src="" style="width: 500px"/>-->
+      <!--</label>-->
+      <!--</div>-->
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>

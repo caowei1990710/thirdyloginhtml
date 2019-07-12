@@ -1,0 +1,67 @@
+<div class="tab-content">
+  <form class="form-inline am-form-query" name="queryForm">
+    <div class="textleft">
+      <label class="control-label textright">{{$root.lagconfig['游戏放名称']}}</label>
+      <input ng-model="thirdyagent.query.name" name="name" type="text">
+      <!--<select-list ng-model="thirdyagent.query.name" name="banklist" type="1"></select-list>-->
+      <label class="control-label textright">{{$root.lagconfig['所属代理']}}</label>
+      <input ng-model="thirdyagent.query.agentName" name="agentName" type="text">
+      <button type="submit" class="departmentbutton btn btn-primary toselet" style="margin-right: 10px"
+              ng-click="thirdyagent.get(1);">
+        {{$root.lagconfig['查询']}}
+      </button>
+      <label class="control-label textright">{{$root.lagconfig['当前状态']}}</label>
+      <select-list ng-model="thirdyagent.query.state" name="banktypecardstatus" type="1"></select-list>
+    </div>
+  </form>
+  <div class="tabbleout">
+    <table class="table tableoutwidth">
+      <thead>
+      <tr>
+        <!--data="[{id:'bankId'},{id:'bankCard'},{id:'deviceId'},{id:'cardName'},{id:'telephone'},{id:'transactionForToday'},{id:'credit'},{id:'platformId'},{id:'type'}]"-->
+        <th>{{$root.lagconfig['游戏放名称']}}</th><!--<th>{{$root.lagconfig['银行网点']}}</th>-->
+        <th>{{$root.lagconfig['费率']}}</th>
+        <th>{{$root.lagconfig['回调地址']}}</th>
+        <th>{{$root.lagconfig['目前余额']}}</th>
+        <th>{{$root.lagconfig['锁定金额']}}</th>
+        <th>{{$root.lagconfig['状态']}}</th>
+        <th>{{$root.lagconfig['绑定银行卡']}}</th><!--<th>{{$root.lagconfig['绑定商户号']}}</th>-->
+        <th>{{$root.lagconfig['所属代理']}}</th>
+        <th>{{$root.lagconfig['创建时间']}}</th>
+        <th>{{$root.lagconfig['登录时间']}}</th>
+        <th>{{$root.lagconfig['备注']}}</th>
+      </tr>
+      </thead>
+      <tbody data="thirdyagent.bankindex" ng-model="thirdyagent.bankList" index="thirdyagent.bankindex">
+      <tr ng-repeat="item in thirdyagent.bankList track by $index" ng-click="thirdyagent.editBank($index)"
+          ng-class="{acolor:thirdyagent.bankindex == $index}">
+        <td ng-class="{colorwhite:thirdyagent.bankindex == $index}">
+          {{item.name}}
+        </td>
+        <td ng-class="{colorwhite:thirdyagent.bankindex == $index}">{{item.payfee}}</td>
+        <td ng-class="{colorwhite:thirdyagent.bankindex == $index}">{{item.callbackurl}}</td>
+        <td ng-class="{colorwhite:thirdyagent.bankindex == $index}">{{item.amount}}</td>
+        <td ng-class="{colorwhite:thirdyagent.bankindex == $index}">{{item.lockMoney}}</td>
+        <td>
+          <type-style value="item.state" list="banktypecardstatus"></type-style>
+        </td>
+        <td ng-class="{colorwhite:thirdyagent.bankindex == $index}">{{item.bankCard}}</td>
+        <td ng-class="{colorwhite:thirdyagent.bankindex == $index}">{{item.agentName}}</td>
+        <td ng-class="{colorwhite:thirdyagent.bankindex == $index}">{{item.crateTime}}</td>
+        <td ng-class="{colorwhite:thirdyagent.bankindex == $index}">{{item.lastLoginTime}}</td>
+        <td ng-class="{colorwhite:thirdyagent.bankindex == $index}">{{item.remark}}</td>
+      </tr>
+      </tbody>
+    </table>
+    <div style="text-align: center">总计{{thirdyagent.totalSum}}小计{{thirdyagent.bankList.length}}</div>
+  </div>
+  <pagination page="thirdyagent.page" total="thirdyagent.totalSum" size="thirdyagent.sizePerPage"
+              trigger="thirdyagent.get(page)"></pagination>
+  <div class="pull-right buttonpost">
+    <click-button click="thirdyagent.showeditAgent" data="user.roleitem" value="更新"></click-button>
+    <click-button href="createPlatform" data="user.roleitem" value="创建"></click-button>
+    <!--<click-button click="bc.showeditMoney" value="调整余额"></click-button>-->
+  </div>
+</div>
+
+<div ng-include="'app/user/user.popup.html'"></div>
